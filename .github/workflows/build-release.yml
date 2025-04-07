@@ -39,13 +39,24 @@ jobs:
         run: |
           find ./build/$PLUGIN_SLUG -type f -name "*.php" -exec php -l {} \;
 
-      - name: 🧪 Run PHPCompatibility scan
-        uses: php-actions/phpcs@v1
+      - name: 🧰 Set up PHP + Composer
+        uses: shivammathur/setup-php@v2
         with:
-          php_version: '8.2'
-          path: build/${{ env.PLUGIN_SLUG }}
-          standard: PHPCompatibility
-          args: "--runtime-set testVersion 7.4-8.2"
+          php-version: '8.2'
+          coverage: none
+          tools: composer, phpcs
+
+      - name: 📦 Install PHPCompatibility
+        run: |
+          composer global require --dev dealerdirect/phpcodesniffer-composer-installer
+          composer global require phpcompatibility/php-compatibility
+
+      - name: 🧪 Run PHPCompatibility Scan
+        run: |
+          ~/.composer/vendor/bin/phpcs --standard=PHPCompatibility \
+            --runtime-set testVersion 7.4-8.2 \
+            --report=summary \
+            build/$PLUGIN_SLUG
 
       - name: 📦 Create ZIP archive
         run: |
