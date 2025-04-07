@@ -66,10 +66,10 @@ This plugin does not send secrets in plain text. Every request is signed with HM
 
 See [CHANGELOG.md](./CHANGELOG.md) for full release history.
 
-Latest: **v1.4**
-- HMAC security added ✅
-- Integration examples included ✅
-- UI improvement + PHP 8.2 support ✅
+Latest: **v1.5**
+- 🔒 WP_Filesystem export refactor
+- 🛠️ GitHub Actions release flow with auto-zip
+- 🧼 Clean build without DS_Store or build-release.sh
 
 ---
 

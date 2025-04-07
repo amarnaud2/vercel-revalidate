@@ -46,6 +46,7 @@ jobs:
             --exclude "README.md" \
             --exclude "*.zip" \
             --exclude "readme-wp.txt" \
+            --exclude "update-version.txt" \
             --exclude "build-release.sh"
 
           cp ./readme-wp.txt ./build/$PLUGIN_SLUG/readme.txt
