@@ -32,11 +32,13 @@ jobs:
             --exclude "node_modules" \
             --exclude ".gitignore" \
             --exclude "*.zip" \
-            --exclude "readme-wp.txt" \
             --exclude ".DS_Store" \
+            --exclude "build-release.sh" \
             --exclude "update-version.sh" \
-            --exclude "build-release.sh"
+            --exclude "readme-wp.txt"
 
+      - name: 📄 Rename readme-wp.txt to readme.txt
+        run: |
           cp ./readme-wp.txt ./build/$PLUGIN_SLUG/readme.txt
 
       - name: 🔧 PHP syntax check (lint)
