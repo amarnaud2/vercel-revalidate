@@ -5,70 +5,78 @@ on:
     tags:
       - 'v*'
 
-env:
-  PLUGIN_SLUG: vercel-revalidate
-  RELEASE_TAG: ${{ github.ref_name }}
-
 jobs:
   build-release:
     name: 🛠️ Build Plugin ZIP on Tag
     runs-on: ubuntu-latest
+    env:
+      PLUGIN_SLUG: vercel-revalidate
+      RELEASE_TAG: ${{ github.ref_name }}
 
     steps:
       - name: 💾 Checkout code
         uses: actions/checkout@v3
 
+      - name: 📋 Set up Node (optional)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: 🌐 Set environment vars
+        run: |
+          echo "PLUGIN_SLUG=vercel-revalidate" >> $GITHUB_ENV
+          echo "RELEASE_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+      - name: 🧹 Clean up files
+        run: |
+          rm -f build-release.sh
+          find . -name ".DS_Store" -delete
+
       - name: 📁 Prepare build directory
         run: |
-          mkdir -p build/$PLUGIN_SLUG
+          mkdir build
           rsync -av --progress ./ ./build/$PLUGIN_SLUG \
             --exclude ".git" \
             --exclude ".github" \
             --exclude "node_modules" \
             --exclude ".gitignore" \
+            --exclude "README.md" \
             --exclude "*.zip" \
-            --exclude ".DS_Store" \
-            --exclude "build-release.sh" \
-            --exclude "update-version.sh" \
-            --exclude "readme-wp.txt"
+            --exclude "readme-wp.txt" \
+            --exclude "build-release.sh"
 
-      - name: 📄 Rename readme-wp.txt to readme.txt
-        run: cp ./readme-wp.txt ./build/$PLUGIN_SLUG/readme.txt
+          cp ./readme-wp.txt ./build/$PLUGIN_SLUG/readme.txt
 
       - name: 🔧 PHP syntax check (lint)
         run: |
           find ./build/$PLUGIN_SLUG -type f -name "*.php" -exec php -l {} \;
 
-      - name: 🧰 Set up PHP + Composer
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          coverage: none
-          tools: composer, phpcs
+      - name: 🔓 Allow Composer Plugin for PHPCS compatibility
+        run: composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
 
-      - name: 📦 Install PHPCompatibility
+      - name: 🔍 Install PHPCS and PHPCompatibility
         run: |
           composer global require --dev dealerdirect/phpcodesniffer-composer-installer
           composer global require phpcompatibility/php-compatibility
 
-      - name: 🧪 Run PHPCompatibility Scan
+      - name: 🧪 Run PHPCompatibility scan
         run: |
-          ~/.composer/vendor/bin/phpcs --standard=PHPCompatibility \
-            --runtime-set testVersion 7.4-8.2 \
-            --report=summary \
-            build/$PLUGIN_SLUG
+          ~/.composer/vendor/bin/phpcs build/$PLUGIN_SLUG \
+            --standard=PHPCompatibility \
+            --report=full \
+            --runtime-set testVersion 7.4-8.2
 
       - name: 📦 Create ZIP archive
         run: |
           cd build
-          zip -r ../$PLUGIN_SLUG.$RELEASE_TAG.zip $PLUGIN_SLUG -x "*.DS_Store"
+          zip -r ../$PLUGIN_SLUG.${RELEASE_TAG}.zip $PLUGIN_SLUG
 
       - name: 🚀 Upload release to GitHub
         uses: softprops/action-gh-release@v1
         with:
           name: Vercel Revalidate ${{ env.RELEASE_TAG }}
           tag_name: ${{ env.RELEASE_TAG }}
-          files: ${{ env.PLUGIN_SLUG }}.${{ env.RELEASE_TAG }}.zip
+          files: vercel-revalidate.${{ env.RELEASE_TAG }}.zip
           body: |
             ✅ Automated release from GitHub Actions
             See the changelog and documentation in README.md
