@@ -1,0 +1,38 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+
+# VSCode files
+.vscode/
+.history/
+
+# WordPress plugin build artifacts
+*.zip
+*.mo
+*.log
+*.pot~
+
+# Node & Composer (if accidentally added)
+node_modules/
+vendor/
+
+# Backup or temp files
+*.bak
+*.swp
+*.tmp
+*.sublime-workspace
+*.sublime-project
+
+# System-wide ignore
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Translations compiled
+languages/*.mo
+
+# Ignore anything secret (example)
+.env
+.env.local
