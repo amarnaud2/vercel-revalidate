@@ -4,7 +4,7 @@
 ![PHP](https://img.shields.io/badge/PHP-7.4%2B-8892BF?logo=php)
 ![WordPress](https://img.shields.io/badge/tested%20up%20to-6.7-blue)
 ![License](https://img.shields.io/badge/license-GPLv2-blue)
-![Build](https://github.com/arnaudmartin/vercel-revalidate/actions/workflows/build-release.yml/badge.svg)
+![Build](https://github.com/amarnaud2/vercel-revalidate/actions/workflows/build-release.yml/badge.svg)
 
 Trigger ISR (Incremental Static Regeneration) from WordPress to Vercel on post update. Built for headless WordPress + Next.js.
 
