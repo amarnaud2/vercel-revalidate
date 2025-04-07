@@ -15,23 +15,23 @@ add_action('admin_menu', 'vercel_revalidate_help_menu');
 function vercel_revalidate_help_page() {
     ?>
     <div class="wrap">
-        <h1><?php _e('Integration with Next.js (Pages & App Router)', 'vercel-revalidate'); ?></h1>
-        <p><?php _e('This plugin works with both routing systems in Next.js: Pages Router and App Router. Below are examples to help you set up your endpoint correctly.', 'vercel-revalidate'); ?></p>
+        <h1><?php esc_html_e('Integration with Next.js (Pages & App Router)', 'vercel-revalidate'); ?></h1>
+        <p><?php esc_html_e('This plugin works with both routing systems in Next.js: Pages Router and App Router. Below are examples to help you set up your endpoint correctly.', 'vercel-revalidate'); ?></p>
     <div style="padding: 1rem; background: #f1f1f1; border-left: 4px solid #0073aa; margin-bottom: 2rem;">
-      <p><strong><?php _e('🔒 This plugin uses HMAC signature validation by default.', 'vercel-revalidate'); ?></strong><br>
-      <?php _e('All revalidation requests are cryptographically signed to ensure they are authentic and tamper-proof. Your secret key is never exposed in the URL — only a hashed version is transmitted. This protects your Next.js site from unauthorized invalidation attempts.', 'vercel-revalidate'); ?>
+      <p><strong><?php esc_html_e('🔒 This plugin uses HMAC signature validation by default.', 'vercel-revalidate'); ?></strong><br>
+      <?php esc_html_e('All revalidation requests are cryptographically signed to ensure they are authentic and tamper-proof. Your secret key is never exposed in the URL — only a hashed version is transmitted. This protects your Next.js site from unauthorized invalidation attempts.', 'vercel-revalidate'); ?>
       </p>
     </div>
     <div style="padding: 1rem; background: #fff3cd; border-left: 4px solid #ff9900; margin-bottom: 2rem;">
-      <p><strong><?php _e('⚠️ Important note about Edge Functions (App Router)', 'vercel-revalidate'); ?></strong><br>
-      <?php _e('If your revalidation endpoint is deployed as an Edge Function (e.g. using the App Router in edge runtime mode), the native Node.js crypto module may not be available.', 'vercel-revalidate'); ?>
+      <p><strong><?php esc_html_e('⚠️ Important note about Edge Functions (App Router)', 'vercel-revalidate'); ?></strong><br>
+      <?php esc_html_e('If your revalidation endpoint is deployed as an Edge Function (e.g. using the App Router in edge runtime mode), the native Node.js crypto module may not be available.', 'vercel-revalidate'); ?>
       <br>
-      <?php _e('In that case, use the Web Crypto API instead to validate the HMAC signature.', 'vercel-revalidate'); ?>
+      <?php esc_html_e('In that case, use the Web Crypto API instead to validate the HMAC signature.', 'vercel-revalidate'); ?>
       </p>
     </div>
 
 
-        <h2><?php _e('1. Pages Router with TypeScript (/pages/api/revalidate.ts)', 'vercel-revalidate'); ?></h2>
+        <h2><?php esc_html_e('1. Pages Router with TypeScript (/pages/api/revalidate.ts)', 'vercel-revalidate'); ?></h2>
         <pre><code>import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -58,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 }</code></pre>
 
-<h2><?php _e('2. Pages Router with JavaScript (/pages/api/revalidate.js)', 'vercel-revalidate'); ?></h2>
+<h2><?php esc_html_e('2. Pages Router with JavaScript (/pages/api/revalidate.js)', 'vercel-revalidate'); ?></h2>
     <pre><code>const crypto = require('crypto');
 
 export default async function handler(req, res) {
@@ -84,9 +84,9 @@ export default async function handler(req, res) {
   }
 }</code></pre>
 
-        <p><?php _e('Replace `/blog/${slug}` with the path matching your Next.js dynamic route.', 'vercel-revalidate'); ?></p>
+        <p><?php esc_html_e('Replace `/blog/${slug}` with the path matching your Next.js dynamic route.', 'vercel-revalidate'); ?></p>
     
-    <h2><?php _e('3. App Router with TypeScript (/app/api/revalidate/route.ts)', 'vercel-revalidate'); ?></h2>
+    <h2><?php esc_html_e('3. App Router with TypeScript (/app/api/revalidate/route.ts)', 'vercel-revalidate'); ?></h2>
     <pre><code>import { NextRequest, NextResponse } from 'next/server';
 import { createHmac } from 'crypto';
 
@@ -116,7 +116,7 @@ export async function GET(req: NextRequest) {
   });
 }</code></pre>
 
-    <h2><?php _e('4. App Router with JavaScript (/app/api/revalidate/route.js)', 'vercel-revalidate'); ?></h2>
+    <h2><?php esc_html_e('4. App Router with JavaScript (/app/api/revalidate/route.js)', 'vercel-revalidate'); ?></h2>
     <pre><code>const crypto = require('crypto');
 
 export async function GET(req) {

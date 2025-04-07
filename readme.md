@@ -1,8 +1,10 @@
-# Vercel Revalidate
+# Vercel Revalidate – WordPress Plugin for Next.js ISR
 
-[![WordPress Tested Up To: 6.7](https://img.shields.io/badge/WP-6.7-blue.svg)](https://wordpress.org/)
-[![PHP 7.4–8.2 Compatible](https://img.shields.io/badge/PHP-7.4--8.2-green.svg)](https://www.php.net/)
-[![License: GPLv2](https://img.shields.io/badge/license-GPLv2-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
+![Version](https://img.shields.io/badge/version-1.5-blue.svg)
+![PHP](https://img.shields.io/badge/PHP-7.4%2B-8892BF?logo=php)
+![WordPress](https://img.shields.io/badge/tested%20up%20to-6.7-blue)
+![License](https://img.shields.io/badge/license-GPLv2-blue)
+![Build](https://github.com/arnaudmartin/vercel-revalidate/actions/workflows/build-release.yml/badge.svg)
 
 Trigger ISR (Incremental Static Regeneration) from WordPress to Vercel on post update. Built for headless WordPress + Next.js.
 

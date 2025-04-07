@@ -1,0 +1,71 @@
+name: 🌟 Build and Release Plugin
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-release:
+    name: 🛠️ Build Plugin ZIP on Tag
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 💾 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 📋 Set up Node (optional)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: 🌐 Set environment vars
+        run: |
+          echo "PLUGIN_SLUG=vercel-revalidate" >> $GITHUB_ENV
+          echo "RELEASE_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+      - name: 📁 Prepare build directory
+        run: |
+          mkdir build
+          rsync -av --progress ./ ./build/$PLUGIN_SLUG \
+            --exclude ".git" \
+            --exclude ".github" \
+            --exclude "node_modules" \
+            --exclude ".gitignore" \
+            --exclude "README.md" \
+            --exclude "*.zip" \
+            --exclude "readme-wp.txt"
+
+          cp ./readme-wp.txt ./build/$PLUGIN_SLUG/readme.txt
+
+      - name: 🔧 PHP syntax check (lint)
+        run: |
+          find ./build/$PLUGIN_SLUG -type f -name "*.php" -exec php -l {} \;
+
+      - name: 🔎 Install WP Plugin Check
+        run: |
+          git clone https://github.com/WordPress/plugin-check.git /tmp/plugin-check
+          cd /tmp/plugin-check
+          composer install
+
+      - name: 🔍 Run WP Plugin Check
+        run: |
+          cd /tmp/plugin-check
+          php plugincheck.php "$GITHUB_WORKSPACE/build/$PLUGIN_SLUG"
+
+      - name: 📦 Create ZIP archive
+        run: |
+          cd build
+          zip -r ../$PLUGIN_SLUG.$RELEASE_TAG.zip $PLUGIN_SLUG
+
+      - name: 👌 Upload release to GitHub
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Vercel Revalidate ${{ env.RELEASE_TAG }}
+          tag_name: ${{ env.RELEASE_TAG }}
+          files: vercel-revalidate.${{ env.RELEASE_TAG }}.zip
+          body: |
+            ✅ Automated release from GitHub Actions
+            See the changelog and documentation in README.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

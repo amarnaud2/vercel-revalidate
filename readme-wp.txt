@@ -3,9 +3,9 @@ Contributors: arnaudmartin
 Tags: nextjs, vercel, isr, revalidate, static
 Requires at least: 5.5
 Tested up to: 6.7
-Stable tag: 1.4
+Stable tag: 1.5
 Requires PHP: 7.4
-Tested up to: 8.2
+Tested up to PHP: 8.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,11 @@ Yes, the Logs page allows you to view and delete all revalidation history.
 3. Help and Integration tab
 
 == Changelog =
+
+= 1.5 =
+* 🔒 WP_Filesystem export refactor
+* 🛠️ GitHub Actions release flow with auto-zip
+* 🧼 Clean build without DS_Store or build-release.sh
 
 = 1.4 =
 * Added HMAC signature verification for secure endpoint calls

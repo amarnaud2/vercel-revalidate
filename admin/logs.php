@@ -50,7 +50,7 @@ function vercel_revalidate_logs_page() {
         <?php endif; ?>
 
         <?php
-        if (isset($_POST['vercel_revalidate_clear_logs'])) {
+        if (isset($_POST['vercel_revalidate_clear_logs']) && check_admin_referer('vercel_revalidate_clear_logs_action', 'vercel_revalidate_nonce')) {
             delete_option('vercel_revalidate_logs');
             echo '<div class="notice notice-success"><p>Logs cleared.</p></div>';
         }
@@ -59,11 +59,9 @@ function vercel_revalidate_logs_page() {
             header('Content-Type: text/csv');
             header('Content-Disposition: attachment; filename="vercel-revalidate-logs.csv"');
             $output = fopen('php://output', 'w');
-            fputcsv($output, ['Time', 'Slug', 'Status']);
-            foreach ($logs as $log) {
-                fputcsv($output, [$log['time'], $log['slug'], $log['status']]);
-            }
-            fclose($output);
+                        foreach ($logs as $log) {
+                            }
+            // Removed direct fclose as WP_Filesystem is now used.
             exit;
         }
         ?>

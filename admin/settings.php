@@ -7,7 +7,6 @@ function vercel_revalidate_admin_menu() {
         'manage_options',
         'vercel-revalidate',
         'vercel_revalidate_settings_page',
-        /*'dashicons-update',*/
         'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCA3NiA2NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cGF0aCBkPSJNMzcuNTI3NCAwTDc1LjA1NDggNjVIMEwzNy41Mjc0IDBaIiBmaWxsPSIjMDAwMDAwIi8+Cjwvc3ZnPg==',
         81
     );
@@ -30,13 +29,20 @@ function vercel_revalidate_settings_page() {
 
         <h2>Manual Revalidation Test</h2>
         <form method="post">
+            <?php wp_nonce_field('vercel_revalidate_test_action', 'vercel_revalidate_nonce'); ?>
             <input type="text" name="vercel_revalidate_test_slug" placeholder="Enter slug (e.g. my-post-slug)" class="regular-text" required />
             <?php submit_button('Revalidate Now', 'primary', 'vercel_revalidate_test_submit'); ?>
         </form>
 
         <?php
-        if (isset($_POST['vercel_revalidate_test_submit'])) {
-            $slug = sanitize_text_field($_POST['vercel_revalidate_test_slug']);
+        if (
+            isset($_POST['vercel_revalidate_test_submit']) &&
+            check_admin_referer('vercel_revalidate_test_action', 'vercel_revalidate_nonce')
+        ) {
+            $slug = isset($_POST['vercel_revalidate_test_slug'])
+                ? sanitize_text_field(wp_unslash($_POST['vercel_revalidate_test_slug']))
+                : '';
+
             $secret = get_option('vercel_revalidate_secret');
             $endpoint = get_option('vercel_revalidate_url');
 
@@ -66,10 +72,26 @@ function vercel_revalidate_settings_page() {
     <?php
 }
 
-function vercel_revalidate_register_settings() {
-    register_setting('vercel_revalidate_settings', 'vercel_revalidate_secret');
-    register_setting('vercel_revalidate_settings', 'vercel_revalidate_url');
+function vercel_revalidate_secret_args() {
+    return [
+        'sanitize_callback' => 'sanitize_text_field',
+        'type'              => 'string',
+        'show_in_rest'      => false,
+    ];
+}
 
+function vercel_revalidate_url_args() {
+    return [
+        'sanitize_callback' => 'esc_url_raw',
+        'type'              => 'string',
+        'show_in_rest'      => false,
+    ];
+}
+
+function vercel_revalidate_register_settings() {
+    register_setting('vercel_revalidate_settings', 'vercel_revalidate_secret', vercel_revalidate_secret_args());
+    register_setting('vercel_revalidate_settings', 'vercel_revalidate_url', vercel_revalidate_url_args());
+    
     add_settings_section(
         'vercel_revalidate_section',
         'Revalidation Settings',
