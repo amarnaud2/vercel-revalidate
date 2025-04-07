@@ -3,7 +3,7 @@
 Plugin Name: Vercel Revalidate
 Plugin URI: https://www.digital-advantage.com
 Description: Trigger Next.js ISR revalidation on post update or publish.
-Version: 1.4
+Version: 1.5
 Author: Arnaud Martin
 Author URI: https://www.digital-advantage.com
 License: GPL2
