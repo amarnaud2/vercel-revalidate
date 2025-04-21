@@ -1,5 +1,7 @@
 # Vercel Revalidate – WordPress Plugin for Next.js ISR
 
+This repository is archived because it has moved to [https://github.com/amarnaud2/revalidate-for-vercel](https://github.com/amarnaud2/revalidate-for-vercel).
+
 ![Version](https://img.shields.io/badge/version-1.5-blue.svg)
 ![PHP](https://img.shields.io/badge/PHP-7.4%2B-8892BF?logo=php)
 ![WordPress](https://img.shields.io/badge/tested%20up%20to-6.7-blue)
